@@ -8,18 +8,23 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Set up PHP
+        uses: shivamathur/setup-php@v2
         with:
-          node-version: '22'
+          php-version: '8.3' 
+          extensions: mbstring, xml, ctype, iconv, mysql 
+          coverage: none
 
-      - run: npm install
+      - name: Install Dependencies
+        run: |
+          composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader
 
       - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'web-app-lucas' 
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          #package: .
+          package: .
