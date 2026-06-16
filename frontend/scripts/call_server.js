@@ -1,11 +1,4 @@
-const currentPath = window.location.pathname;
-let SERV_BASE = '/backend';
-
-if (currentPath.includes('Fil-Rouge')) {
-    SERV_BASE = '/Fil-Rouge/backend';
-} else if (currentPath.includes('WEB-APP-Lucas')) {
-    SERV_BASE = '/WEB-APP-Lucas/backend';
-}
+const SERV_BASE = ''; 
 
 export const SERV = {
     async request(url, options = {}) {

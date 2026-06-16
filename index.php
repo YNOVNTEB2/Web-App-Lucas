@@ -1,38 +1,29 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fil Rouge - Ymmobilier - Accueil</title>
-    <meta name="description" content="Fil Rouge - Ymmobilier, interface de gestion de propriétés immobilières avec connexion, inscription et tableau de bord responsive.">
-    <link rel="stylesheet" href="frontend/styles/styles.css">
-</head>
-<body>
-    <a class="skip-link" href="#main-content">Aller au contenu</a>
-    <section class="page-shell">
-        <div class="container">
-            <header class="site-header" aria-label="En-tête du site">
-                <div class="site-brand">Fil Rouge - Ymmobilier</div>
-                <nav class="site-nav" aria-label="Navigation principale" id="nav-links">
-                </nav>
-            </header>
+<?php
+// Permet de recevoir les requêtes JS (CORS)
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
-            <main id="main-content">
-                <article class="hero-card">
-                    <div>
-                        <h1 class="hero-title">Bienvenue sur Ymmobilier</h1>
-                        <p class="hero-text">Connectez-vous ou créez un compte pour gérer vos propriétés immobilières et accéder à votre espace personnalisé.</p>
-                    </div>
-                    <div class="hero-actions">
-                        <a class="button" href="frontend/pages/login.html">Se connecter</a>
-                        <a class="button-secondary" href="frontend/pages/register.html">Créer un compte</a>
-                    </div>
-                </article>
-            </main>
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
+}
 
-            <footer class="site-footer">Site responsive et accessible pour la gestion de vos biens.</footer>
-        </div>
-    </section>
-    <script type="module" src="frontend/scripts/common.js"></script>
-</body>
-</html>
+// On récupère l'URL demandée (ex: /backend/auth/login.php)
+$request = $_SERVER['REQUEST_URI'];
+
+// On retire les paramètres de requêtes (?t=12345...) pour ne garder que le chemin du fichier
+$path = parse_url($request, PHP_URL_PATH);
+
+// Sécurité : On vérifie que la requête demande bien quelque chose dans le dossier backend
+if (strpos($path, '/backend/') === 0) {
+    // On calcule le chemin réel du fichier sur le serveur Azure
+    $file = __DIR__ . $path;
+
+    if (file_exists($file)) {
+        include_once $file;
+        exit;
+    }
+}
+
+// Si on arrive ici, c'est que ce n'est pas du PHP, on laisse Azure gérer le HTML statique
+return false;
