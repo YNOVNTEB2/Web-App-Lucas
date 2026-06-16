@@ -1,6 +1,6 @@
 <?php
 $servername = getenv('DB_HOST') ?: "localhost";
-$username   = getenv('DB_USER') ?: "adminRoot";
+$username   = getenv('DB_USER') ?: "dbadmin";
 $password   = getenv('DB_PASSWORD') ?: "";
 $dbname     = getenv('DB_NAME') ?: "filrouge";
 
