@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Si on demande un fichier ou un dossier qui existe (ex: ton frontend/index.html), on le laisse passer
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+# Si on demande le backend, on redirige proprement vers le script PHP demandé
+RewriteRule ^backend/(.*)$ backend/$1 [QSA,L]
